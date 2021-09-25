@@ -1,6 +1,5 @@
 import numpy as np
 import tensorflow as tf
-import os
 from PIL import Image
 
 with open('plantvillage_model.json', 'r') as json_file:
@@ -51,5 +50,3 @@ def classify_image(file_path):
     }
 
     return result
-
-print(classify_image('2.jpg'))
