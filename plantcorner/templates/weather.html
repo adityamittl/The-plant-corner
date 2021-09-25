@@ -1,149 +1,453 @@
 <!DOCTYPE html>
 <html lang="en" dir="ltr">
-  <head>
-    <meta charset="utf-8" />
-    <title>The Plant Corner | Weather</title>
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <link rel="stylesheet" href="style.css" />
-    <link
-      rel="stylesheet"
-      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css"
-    />
-  </head>
 
-  <body>
-    <style>
-      * {
-        padding: 0;
-        margin: 0;
-        text-decoration: none;
-        list-style: none;
-        box-sizing: border-box;
-      }
+<head>
+  <meta charset="utf-8" />
+  <title>The Plant Corner | Weather</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <link rel="stylesheet" href="style.css" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css" />
+</head>
 
-      body {
-        font-family: montserrat;
-      }
+<body>
+  <style>
+    * {
+      padding: 0;
+      margin: 0;
+      text-decoration: none;
+      list-style: none;
+      box-sizing: border-box;
+    }
 
-      nav {
-        background: #08e25c;
-        height: 80px;
-        width: 100%;
-      }
+    :root {
+      --bg_main: #0a1f44;
+      --text_light: #fff;
+      --text_med: #53627c;
+      --text_dark: #1e2432;
+      --red: #ff1e42;
+      --darkred: #c3112d;
+      --orange: #ff8c00;
+    }
 
+    body {
+      font-family: montserrat;
+      background-color: rgb(44, 46, 146);
+    }
+
+    nav {
+      background: #08e25c;
+      height: 80px;
+      width: 100%;
+    }
+
+    label.logo {
+      color: white;
+      font-size: 35px;
+      line-height: 80px;
+      padding: 0 100px;
+      font-weight: bold;
+    }
+
+    nav ul {
+      float: right;
+      margin-right: 20px;
+    }
+
+    nav ul li {
+      display: inline-block;
+      line-height: 80px;
+      margin: 0 5px;
+    }
+
+    nav ul li a {
+      color: white;
+      font-size: 17px;
+      padding: 7px 13px;
+      border-radius: 3px;
+      text-transform: uppercase;
+    }
+
+    a.active,
+    a:hover {
+      background: rgb(16, 177, 96);
+      transition: 0.5s;
+    }
+
+    .checkbtn {
+      font-size: 30px;
+      color: white;
+      float: right;
+      line-height: 80px;
+      margin-right: 40px;
+      cursor: pointer;
+      display: none;
+    }
+
+    #check {
+      display: none;
+    }
+
+    @media (max-width: 952px) {
       label.logo {
-        color: white;
-        font-size: 35px;
-        line-height: 80px;
-        padding: 0 100px;
-        font-weight: bold;
-      }
-
-      nav ul {
-        float: right;
-        margin-right: 20px;
-      }
-
-      nav ul li {
-        display: inline-block;
-        line-height: 80px;
-        margin: 0 5px;
+        font-size: 30px;
+        padding-left: 50px;
       }
 
       nav ul li a {
-        color: white;
-        font-size: 17px;
-        padding: 7px 13px;
-        border-radius: 3px;
-        text-transform: uppercase;
+        font-size: 16px;
       }
+    }
 
-      a.active,
-      a:hover {
-        background: rgb(16, 177, 96);
-        transition: 0.5s;
-      }
-
+    @media (max-width: 858px) {
       .checkbtn {
-        font-size: 30px;
-        color: white;
-        float: right;
-        line-height: 80px;
-        margin-right: 40px;
-        cursor: pointer;
-        display: none;
+        display: block;
       }
 
-      #check {
-        display: none;
+      ul {
+        position: fixed;
+        width: 100%;
+        height: 100vh;
+        background: #2f5e41;
+        top: 80px;
+        left: -100%;
+        text-align: center;
+        transition: all 0.5s;
       }
 
-      @media (max-width: 952px) {
-        label.logo {
-          font-size: 30px;
-          padding-left: 50px;
-        }
-
-        nav ul li a {
-          font-size: 16px;
-        }
+      nav ul li {
+        display: block;
+        margin: 50px 0;
+        line-height: 30px;
       }
 
-      @media (max-width: 858px) {
-        .checkbtn {
-          display: block;
-        }
-
-        ul {
-          position: fixed;
-          width: 100%;
-          height: 100vh;
-          background: #2f5e41;
-          top: 80px;
-          left: -100%;
-          text-align: center;
-          transition: all 0.5s;
-        }
-
-        nav ul li {
-          display: block;
-          margin: 50px 0;
-          line-height: 30px;
-        }
-
-        nav ul li a {
-          font-size: 20px;
-        }
-
-        a:hover,
-        a.active {
-          background: none;
-          color: #08e25c;
-        }
-
-        #check:checked ~ ul {
-          left: 0;
-        }
+      nav ul li a {
+        font-size: 20px;
       }
-    </style>
-    <nav>
-      <input type="checkbox" id="check" />
-      <label for="check" class="checkbtn">
-        <i class="fas fa-bars"></i>
-      </label>
-      <label class="logo">The Plant Corner</label>
-      <ul>
-        <li><a href="/">Home</a></li>
-        <li><a href="/upload">Test</a></li>
-        <li><a class="active" href="/weather">Check weather</a></li>
-        <li><a href="/plants">Plants</a></li>
-        {% if user.is_authenticated %}
-        <li><a href="/dashboard">{{ user.first_name }}</a></li>
-        {% else %}
-        <li><a href="/weather">Login/Register</a></li>
-        {% endif %}
-      </ul>
-    </nav>
-    <section></section>
-  </body>
+
+      a:hover,
+      a.active {
+        background: none;
+        color: #08e25c;
+      }
+
+      #check:checked~ul {
+        left: 0;
+      }
+    }
+
+    section {
+      height: 100%;
+    }
+
+    section a {
+      color: inherit;
+      text-decoration: none;
+    }
+
+    section button {
+      cursor: pointer;
+    }
+
+    section input {
+      -webkit-appearance: none;
+    }
+
+    section button,
+    input {
+      border: none;
+      background: none;
+      outline: none;
+      color: inherit;
+    }
+
+    section img {
+      display: block;
+      max-width: 100%;
+      height: auto;
+    }
+
+    section ul {
+      list-style: none;
+    }
+
+
+    section .container {
+      color: white;
+      width: 100%;
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 0 15px;
+    }
+
+    section .top-banner {
+      color: var(--text_light);
+    }
+
+    .top-banner form {
+      margin-top: 60px;
+      position: relative;
+      display: flex;
+      align-items: center;
+    }
+
+    .top-banner form input {
+      font-size: 2rem;
+      height: 40px;
+      padding: 5px 5px 10px;
+      border-bottom: 1px solid;
+    }
+
+    .top-banner form input::placeholder {
+      color: currentColor;
+    }
+
+    .top-banner form button {
+      font-size: 1rem;
+      font-weight: bold;
+      letter-spacing: 0.1em;
+      padding: 15px 20px;
+      margin-left: 15px;
+      border-radius: 5px;
+      background: var(--red);
+      transition: background 0.3s ease-in-out;
+    }
+
+    .top-banner form button:hover {
+      background: var(--darkred);
+    }
+
+    .top-banner form .msg {
+      position: absolute;
+      bottom: -40px;
+      left: 0;
+      max-width: 450px;
+      min-height: 40px;
+    }
+
+    .ajax-section {
+      margin: 70px 0 20px;
+    }
+
+    .ajax-section .cities {
+      display: grid;
+      grid-gap: 32px 20px;
+      grid-template-columns: repeat(4, 1fr);
+    }
+
+    .ajax-section .city {
+      position: relative;
+      padding: 40px 10%;
+      border-radius: 20px;
+      background: var(--text_light);
+      color: var(--text_med);
+    }
+
+    .ajax-section .city::after {
+      content: '';
+      width: 90%;
+      height: 50px;
+      position: absolute;
+      bottom: -12px;
+      left: 5%;
+      z-index: -1;
+      opacity: 0.3;
+      border-radius: 20px;
+      background: var(--text_light);
+    }
+
+    .ajax-section figcaption {
+      margin-top: 10px;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+    }
+
+    .ajax-section .city-temp {
+      font-size: 5rem;
+      font-weight: bold;
+      margin-top: 10px;
+      color: var(--text_dark);
+    }
+
+    .ajax-section .city sup {
+      font-size: 0.5em;
+    }
+
+    .ajax-section .city-name sup {
+      padding: 0.2em 0.6em;
+      border-radius: 30px;
+      color: var(--text_light);
+      background: var(--orange);
+    }
+
+    .ajax-section .city-icon {
+      margin-top: 10px;
+      width: 100px;
+      height: 100px;
+    }
+
+    @media screen and (max-width: 1000px) {
+      body {
+        padding: 30px;
+      }
+
+      .ajax-section .cities {
+        grid-template-columns: repeat(3, 1fr);
+      }
+    }
+
+    @media screen and (max-width: 700px) {
+
+      .heading,
+      .ajax-section .city-temp {
+        font-size: 3rem;
+      }
+
+      .ajax-section {
+        margin-top: 20px;
+      }
+
+      .top-banner form {
+        flex-direction: column;
+        align-items: flex-start;
+      }
+
+      .top-banner form input,
+      .top-banner form button {
+        width: 100%;
+      }
+
+      .top-banner form button {
+        margin: 20px 0 0 0;
+      }
+
+      .top-banner form .msg {
+        position: static;
+        max-width: none;
+        min-height: 0;
+        margin-top: 10px;
+      }
+
+      .ajax-section .cities {
+        grid-template-columns: repeat(2, 1fr);
+      }
+    }
+
+    @media screen and (max-width: 500px) {
+      body {
+        padding: 15px;
+      }
+
+      .ajax-section .cities {
+        grid-template-columns: repeat(1, 1fr);
+      }
+    }
+  </style>
+  <nav>
+    <input type="checkbox" id="check" />
+    <label for="check" class="checkbtn">
+      <i class="fas fa-bars"></i>
+    </label>
+    <label class="logo">The Plant Corner</label>
+    <ul>
+      <li><a href="/">Home</a></li>
+      <li><a href="/upload">Test</a></li>
+      <li><a class="active" href="/weather">Check weather</a></li>
+      <li><a href="/plants">Plants</a></li>
+      {% if user.is_authenticated %}
+      <li><a href="/dashboard">{{ user.first_name }}</a></li>
+      {% else %}
+      <li><a href="/weather">Login/Register</a></li>
+      {% endif %}
+    </ul>
+  </nav>
+  <section class="top-banner">
+    <div class="container">
+      <form>
+        <input type="text" placeholder="Search for a city" autofocus>
+        <button type="submit">SUBMIT</button>
+        <span class="msg"></span>
+      </form>
+    </div>
+  </section>
+  <section class="ajax-section">
+    <div class="container">
+      <ul class="cities"></ul>
+    </div>
+  </section>
+</body>
+<script>
+  const form = document.querySelector(".top-banner form");
+  const input = document.querySelector(".top-banner input");
+  const msg = document.querySelector(".top-banner .msg");
+  const list = document.querySelector(".ajax-section .cities");
+  const apiKey = "7a2d90ea5a4875d7edf4403a6eb6aa0a";
+
+  form.addEventListener("submit", e => {
+    e.preventDefault();
+    let inputVal = input.value;
+    const listItems = list.querySelectorAll(".ajax-section .city");
+    const listItemsArray = Array.from(listItems);
+
+    if (listItemsArray.length > 0) {
+      const filteredArray = listItemsArray.filter(el => {
+        let content = "";
+        if (inputVal.includes(",")) {
+          if (inputVal.split(",")[1].length > 2) {
+            inputVal = inputVal.split(",")[0];
+            content = el
+              .querySelector(".city-name span")
+              .textContent.toLowerCase();
+          } else {
+            content = el.querySelector(".city-name").dataset.name.toLowerCase();
+          }
+        } else {
+          content = el.querySelector(".city-name span").textContent.toLowerCase();
+        }
+        return content == inputVal.toLowerCase();
+      });
+
+      if (filteredArray.length > 0) {
+        msg.textContent = `You already know the weather for ${filteredArray[0].querySelector(".city-name span").textContent
+          } ...otherwise be more specific by providing the country code as well 😉`;
+        form.reset();
+        input.focus();
+        return;
+      }
+    }
+    const url = `https://api.openweathermap.org/data/2.5/weather?q=${inputVal}&appid=${apiKey}&units=metric`;
+
+    fetch(url)
+      .then(response => response.json())
+      .then(data => {
+        const { main, name, sys, weather } = data;
+        const icon = `https://s3-us-west-2.amazonaws.com/s.cdpn.io/162656/${weather[0]["icon"]
+          }.svg`;
+
+        const li = document.createElement("li");
+        li.classList.add("city");
+        const markup = `
+        <h2 class="city-name" data-name="${name},${sys.country}">
+          <span>${name}</span>
+          <sup>${sys.country}</sup>
+        </h2>
+        <div class="city-temp">${Math.round(main.temp)}<sup>°C</sup></div>
+        <figure>
+          <img class="city-icon" src="${icon}" alt="${weather[0]["description"]
+          }">
+          <figcaption>${weather[0]["description"]}</figcaption>
+        </figure>
+      `;
+        li.innerHTML = markup;
+        list.appendChild(li);
+      })
+      .catch(() => {
+        msg.textContent = "Please search for a valid city 😩";
+      });
+
+    msg.textContent = "";
+    form.reset();
+    input.focus();
+  });
+</script>
+
 </html>
