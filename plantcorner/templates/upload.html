@@ -288,31 +288,46 @@
         {% endif %}
       </ul>
     </nav>
+    {% if result %}
     <div class="upload">
       <div class="container">
-        <div class="wrapper">
-          <div class="image">
-            <img src="" alt="" />
-          </div>
-          <div class="content">
-            <div class="icon">
-              <i class="fas fa-cloud-upload-alt"></i>
-            </div>
-            <div class="text">No file chosen, yet!</div>
-          </div>
-          <div id="cancel-btn">
-            <i class="fas fa-times"></i>
-          </div>
-          <div class="file-name">File name here</div>
-        </div>
-        <button onclick="defaultBtnActive()" id="custom-btn">
-          Choose a file
-        </button>
-        <input id="default-btn" type="file" hidden />
-
-        <div class="btn">Upload and test</div>
+        <div class="file-name">Disease- {{ type }}</div>
+        <br />
+        <div class="file-name">Accuracy- {{ accuracy }}</div>
+        <a href="/upload"><div class="btn">Test Another</div></a>
       </div>
     </div>
+    {% else %}
+    <form method="POST" class="form" enctype="multipart/form-data">
+      {% csrf_token %}
+      <div class="upload">
+        <div class="container">
+          <div class="wrapper">
+            <div class="image">
+              <img src="" alt="" />
+            </div>
+            <div class="content">
+              <div class="icon">
+                <i class="fas fa-cloud-upload-alt"></i>
+              </div>
+              <div class="text">No file chosen, yet!</div>
+            </div>
+            <div id="cancel-btn">
+              <i class="fas fa-times"></i>
+            </div>
+            <div class="file-name">File name here</div>
+          </div>
+          <input id="default-btn" name="myfile" type="file" />
+          <button>Submit</button>
+          <button onclick="defaultBtnActive()" id="custom-btn">
+            Choose a file
+          </button>
+
+          <div class="btn">Upload and test</div>
+        </div>
+      </div>
+    </form>
+    {% endif %}
     <script>
       const wrapper = document.querySelector(".wrapper");
       const fileName = document.querySelector(".file-name");
